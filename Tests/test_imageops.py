@@ -631,8 +631,18 @@ def test_autocontrast_cutoff() -> None:
         def autocontrast(cutoff: int | tuple[int, int]) -> list[int]:
             return ImageOps.autocontrast(img, cutoff).histogram()
 
+        assert autocontrast(0) == autocontrast((0, 0))
         assert autocontrast(10) == autocontrast((10, 10))
         assert autocontrast(10) != autocontrast((1, 10))
+
+
+@pytest.mark.parametrize("cutoff", ((), (10,), (2, 10, 20)))
+def test_autocontrast_invalid_cutoff(cutoff: tuple[int, ...]) -> None:
+    im = Image.new("L", (4, 4), 128)
+    with pytest.raises(
+        ValueError, match="^cutoff tuple must contain exactly two elements$"
+    ):
+        ImageOps.autocontrast(im, cutoff=cutoff)  # type: ignore[arg-type]
 
 
 @pytest.mark.parametrize("ignore", (-1, 256, [0, -1], [0, 256]))

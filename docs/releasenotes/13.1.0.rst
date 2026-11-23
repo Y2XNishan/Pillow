@@ -17,10 +17,13 @@ TODO
 Backwards incompatible changes
 ==============================
 
-TODO
-^^^^
+Autocontrast cutoff tuples
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-TODO
+:py:func:`~PIL.ImageOps.autocontrast` now raises :py:exc:`ValueError` when a
+``cutoff`` tuple does not contain exactly two elements. Previously, an empty
+tuple acted like a zero cutoff, a one-element tuple raised :py:exc:`IndexError`,
+and extra elements were ignored.
 
 Deprecations
 ============

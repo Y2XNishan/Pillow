@@ -119,6 +119,7 @@ def autocontrast(
 
                           .. versionadded:: 8.2.0
 
+    :raises ValueError: If the cutoff tuple does not contain exactly two elements.
     :return: An image.
     """
     if ignore is not None:
@@ -126,6 +127,12 @@ def autocontrast(
             ignore = (ignore,)
         if not all(0 <= ix <= 255 for ix in ignore):
             msg = "ignore must be between or equal to 0 and 255"
+            raise ValueError(msg)
+
+    if isinstance(cutoff, tuple):
+        cutoff_length = len(cutoff)
+        if cutoff_length != 2:
+            msg = "cutoff tuple must contain exactly two elements"
             raise ValueError(msg)
 
     if preserve_tone:
